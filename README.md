@@ -8,7 +8,7 @@ I have always loved debating basketball and the NBA. Many mornings I wake up and
 ## Data Collection
 I decided to scrape https://www.basketball-reference.com/leagues/ with Beautiful Soup for playoff teams' regular season team stat league rankings from the 2003-2004 to 2018-2019 seasons (ex. regular season field goal percentage, total rebounds per game, etc.). League rankings show a relative picture of each team's strengths and weaknesses compared to the rest of the league in a given season going into the playoffs. I did not include actual per game numbers since the nature of the game has changed so much throughout recent years as playstyle, strategies, pace, etc. have skewed numbers like points per game higher than in the past, and comparing the actual numbers across different seasons would give a less accurate representation of the importance of each category to the model.
 
-League rankings are numbered 1-30 since there are 30 total teams: a league rank of 1 being the best, 30 being the worst. I did not scrape older seasons since the playoff structure was changed in 2004 so that an NBA Championship must consist of winning 4 best of 7 game series, whereas prior seasons did not. The web scraper file is separate from this notebook.
+League rankings are numbered 1-30 since there are 30 total teams: a league rank of 1 being the best, 30 being the worst. I did not scrape older seasons since the playoff structure was changed in 2004 so that an NBA Championship must consist of winning 4 best of 7 game series, whereas prior seasons did not. The web scraper file is separate from this notebook, and the resulting data was exported to the .csv files.
 
 ### Features for Models
 * 3P%
