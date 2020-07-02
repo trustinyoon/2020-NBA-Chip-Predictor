@@ -10,13 +10,18 @@ I decided to scrape https://www.basketball-reference.com/leagues/ with Beautiful
 
 League rankings are numbered 1-30 since there are 30 total teams: a league rank of 1 being the best, 30 being the worst. I did not scrape older seasons since the playoff structure was changed in 2004 so that an NBA Championship must consist of winning 4 best of 7 game series, whereas prior seasons did not. The web scraper file is separate from this notebook.
 
-### Relationship between filtered features and number of playoff wins
-variables = list(corr.index)
-corr_df = data[variables].groupby('Playoff Wins').mean()
-corr_df
-plt.title("Average League Ranking in Each Category, by Playoff Wins")
-sns.heatmap(data=corr_df,annot=True)
-plt.xlabel("Regular Season Stat Rankings")
+### Features for Models
+* 3P%
+* DRB
+* O_BLK
+* W
+* SRS
+* ORtg
+* DRtg
+* eFG%
+* O_eFG%
+
+Using league rankings from each of these categories to predict y, which is number of playoff games won.
 
 ## EDA
 #### Opponent Blocks Per Game
@@ -51,3 +56,35 @@ plt.ylim(0, 30)
 ax.set(ylabel="Regular Season League Ranking")
 
 Regular season team defense stat rankings seem to have much less variability than team offense stat rankings, and being ranked in the top 5-10 in these three categories can be a good indicator of a playoff champion. Defensive rebounding (DRB) is important, but slightly less important than limiting opponent field goal efficiency (O_eFG%) and overall defensive rating (DRtg).
+
+### Nature of Wins
+plt.figure(figsize=(10,5))
+plt.title("Team Wins League Rankings of Championship Teams since 2004")
+ax = sns.lineplot(x=chip_years.Year, y=chip_years['W'],label="W")
+sns.lineplot(x=chip_years.Year, y=chip_years['SRS'],label="SRS")
+plt.ylim(0, 30)
+ax.set(ylabel="Regular Season League Ranking")
+
+The amount of wins (W) and Simple Rating System (SRS) in the regular season seem to be the most consistent indicators of predicting a champion. It is rare for a championship team to rank outside the top 5 in number of regular season wins or SRS.
+
+## Models
+I used three models to compare across predictions:
+* Linear Regression
+* Random Forest
+* XGBoost
+
+## Conclusion
+### Limitations
+My main concern with the data is that the sample size of championship teams (16 playoff wins) is very small. This means that the best team in each model will always have an expected win count less than 16 which is obviously not sufficient to win the title. However, I interpreted the scores as a relative scale to see which team has the highest predicted value of wins as the champion.
+
+The models' MAE also varied upon each resplitting of test and train data. The values generally ranged between 2 and 3 for each model. I used the predictions and MAE's from a random trial for the summary findings.
+
+### Summary
+Using regular season stat league rankings, I found that being in the top league rankings of amount of Wins (W) and Simple Rating System (SRS) during the regular season are the best indicators of predicting the champion. In recent trends, a higher offensive rating than defensive rating has translated into a greater chance of winning the title as well.
+
+The best prediction performance was achieved by the Random Forest Regressor with a MAE of 2.65, and projected the Bucks as favorites for the title with 13 expected wins. XGBoost had a smaller Mean Absolute Error of 2.44, however it predicted that the 1st place Bucks would only win 9.3 games which is far off from the 16 needed for a championship.
+
+The Milwaukee Bucks were chosen by each model to be the favorite to win the title. The Lakers, Raptors, and Clippers are usually mixed in the standings behind the Bucks.
+
+### Future Work
+I plan to keep updating this dataset each year's champion and continue to refine the existing models and add new ones. There is a lot of room for improvement in the algorithms, parameters, and statistics I used considering this is my  first data science project with only 2 months of coding experience.
