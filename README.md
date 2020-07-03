@@ -11,7 +11,14 @@ I decided to scrape https://www.basketball-reference.com/leagues/ with Beautiful
 
 League rankings are numbered 1-30 since there are 30 total teams: a league rank of 1 being the best, 30 being the worst. I did not scrape older seasons since the playoff structure was changed in 2004 so that an NBA Championship must consist of winning 4 best of 7 game series, whereas prior seasons did not. The web scraper file is separate from this notebook, and the resulting data was exported to the .csv files.
 
+<img src="figures/fig:1.png" > 
+<img src="figures/fig:2.png" > 
+<img src="figures/fig:3.png" > 
+
 ### Features for Models
+
+<img src="figures/fig:5.png" > 
+
 * 3P%
 * DRB
 * O_BLK
@@ -28,51 +35,41 @@ Using league rankings from each of these categories to predict y, which is numbe
 #### Opponent Blocks Per Game
 I found the Opponent's Blocks (O_BLK) category to be the most interesting feature that is moderately correlated with playoff wins. This finding made me hypothesize that teams who rank in the top percentile in O_BLK give their opponents a more difficult time defending them, which equates to a greater win count. Additionally, the majority of blocks in basketball come from very short range shots, so teams whose opponents are less able to block shots are able to score much easier at a higher clip since there is a much higher probability of making a short range shot (ex. layup/dunk) vs a mid-range 2 or 3 pointer. I further explore the nature of O_BLK below.
 
-sns.jointplot(x=data['O_BLK'],y=data['Playoff Wins'],kind='kde')
-plt.title("Regular Season League Ranking of Blocks Allowed per Game")
+<img src="figures/fig:4.png" > 
 
 ### Championship Team Regular Season League Rankings over Time
 Now I wanted to group each selected variable into 3 major regular season stat categories that are good indicators of predicting the NBA Champion before the playoffs begin: Offense, Defense, Nature of Wins. Below are the three line graphs that show how a championship team's different regular season league rankings have trended over time.
 ### Offense
-chip_years = data.loc[data['Playoff Wins']==16]
 
-plt.figure(figsize=(10,5))
-plt.title("Team Offense League Rankings of Championship Teams since 2004")
-ax = sns.lineplot(x=chip_years.Year, y=chip_years['3P%'],label="3P%")
-sns.lineplot(x=chip_years.Year, y=chip_years['eFG%'],label="eFG%")
-sns.lineplot(x=chip_years.Year, y=chip_years['O_BLK'],label="O_BLK")
-sns.lineplot(x=chip_years.Year, y=chip_years['ORtg'],label="ORtg")
-plt.ylim(0, 30)
-ax.set(ylabel="Regular Season League Ranking")
+<img src="figures/fig:6.png" > 
 
 There is more variability in the 2000s than the 2010s in terms of a champion's regular season team offensive stats. The most interesting trend here is the 3P% as the Golden State Warriors have revolutionized basketball with shooting 3's since 2014. The 3 pointer has become the most important shot in the game due to its higher EV and ability to space the floor to create more open 2 point field goals. We see that generally, champions of recent years tend to be ranked in the top 5-10 for each offensive team stat and are generally ranked top 5 in 3P%.
 
 ### Defense
-plt.figure(figsize=(10,5))
-plt.title("Team Defense League Rankings of Championship Teams since 2004")
-ax = sns.lineplot(x=chip_years.Year, y=chip_years['O_eFG%'],label="O_eFG%")
-sns.lineplot(x=chip_years.Year, y=chip_years['DRB'],label="DRB")
-sns.lineplot(x=chip_years.Year, y=chip_years['DRtg'],label="DRtg")
-plt.ylim(0, 30)
-ax.set(ylabel="Regular Season League Ranking")
+
+<img src="figures/fig:7.png" > 
 
 Regular season team defense stat rankings seem to have much less variability than team offense stat rankings, and being ranked in the top 5-10 in these three categories can be a good indicator of a playoff champion. Defensive rebounding (DRB) is important, but slightly less important than limiting opponent field goal efficiency (O_eFG%) and overall defensive rating (DRtg).
 
 ### Nature of Wins
-plt.figure(figsize=(10,5))
-plt.title("Team Wins League Rankings of Championship Teams since 2004")
-ax = sns.lineplot(x=chip_years.Year, y=chip_years['W'],label="W")
-sns.lineplot(x=chip_years.Year, y=chip_years['SRS'],label="SRS")
-plt.ylim(0, 30)
-ax.set(ylabel="Regular Season League Ranking")
+
+<img src="figures/fig:8.png" > 
 
 The amount of wins (W) and Simple Rating System (SRS) in the regular season seem to be the most consistent indicators of predicting a champion. It is rare for a championship team to rank outside the top 5 in number of regular season wins or SRS.
 
 ## Models
 I used three models to compare across predictions:
-* Linear Regression
-* Random Forest
-* XGBoost
+### Linear Regression
+
+<img src="figures/fig:9.png" > 
+
+### Random Forest
+
+<img src="figures/fig:10.png" > 
+
+### XGBoost
+
+<img src="figures/fig:11.png" > 
 
 ## Conclusion
 ### Limitations
